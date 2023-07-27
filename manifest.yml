@@ -1,0 +1,52 @@
+---
+applications:
+  -
+    buildpack: https://github.com/cloudfoundry/java-buildpack.git#v4.57
+    instances: 1
+    memory: 1G
+    name: telemetry-data-service-<env>
+    path: telemetry-data-service-1.0.0.021.jar
+    stack: cflinuxfs4
+    routes:
+      - route: telemetry-data-service-<env>.eu-west.philips-healthsuite.com
+
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ }}'
+      appName: ${VCAP_APPLICATION.name:}
+      appVersion: 1.0.0.0
+      application_loglevel: INFO
+      componentName: prs-telemetry-data-service
+      audit_url: ${vcap.services.prs-audit-service.credentials.audit_url:}
+      shared_key: ${vcap.services.prs-audit-service.credentials.audit_sign_sharedkey:}
+      secret_key: ${vcap.services.prs-audit-service.credentials.audit_sign_secretkey:}
+      audit_url_extension: /core/audit/AuditEvent
+      log_level: INFO
+      hsdp_vault_endpoint: ${vcap.services.prs-vault.credentials.endpoint:}
+      hsdp_vault_role_id: ${vcap.services.prs-vault.credentials.role_id:}
+      hsdp_vault_secret_id: ${vcap.services.prs-vault.credentials.secret_id:}
+      hsdp_vault_secret_path: ${vcap.services.prs-vault.credentials.service_secret_path:}
+      HSDP_IAM_HOST: ${vcap.services.prs-common-cups-<env>.credentials.eu-west.hsdp.iam}
+      #HSDP_IAM_INTROSPECT_URL: https://iam-client-test.eu-west.philips-healthsuite.com/authorize/oauth2/introspect
+      HSDP_IAM_ORGID: 4c3b3ea0-63e8-4bd4-a1eb-aabc8290d365
+      prs_vault_introspectClientIdKey: ${vcap.services.prs-common-cups-<env>.credentials.eu-west.vaultPath.introspectClientIdKey}
+      prs_vault_introspectClientSecretKey: ${vcap.services.prs-common-cups-<env>.credentials.eu-west.vaultPath.introspectClientSecretKey}
+      prs_vault_redisCacheSecretKey: ${vcap.services.prs-common-cups-<env>.credentials.eu-west.vaultPath.redisCacheSecretKey}
+      prs_vault_iamServiceClientCredentialsPath: ${vcap.services.prs-common-cups-<env>.credentials.eu-west.vaultPath.iamServiceClientCredentialsPath}
+      prs_vault_iamUserCredentialsPath: ${vcap.services.prs-common-cups-<env>.credentials.eu-west.vaultPath.iamUserCredentialsPath}
+      prs_vault_wcfClientCredentialsPath: ${vcap.services.prs-common-cups-<env>.credentials.eu-west.vaultPath.wcfClientCredentialsPath}
+      prs_vault_redisCacheCredentialsPath: ${vcap.services.prs-common-cups-<env>.credentials.eu-west.vaultPath.redisCacheCredentialsPath}
+      prs_vault_auditProductKeyVaultPath: ${vcap.services.prs-common-cups-<env>.credentials.eu-west.vaultPath.auditProductKeyVaultPath}
+      
+      config_elastic_url: ${vcap.services.prs-common-cups-<env>.credentials.eu-west.prs.elasticSearchUrl}
+      config_elastic_upsert-script-name: post-telemetry-<env>
+      index_name: telemetry-<env>
+      pageMaxValue: 10000
+      ps_prs_telemetrydata_scope_post: ?.?.prs.telemetryservice.write
+      ps_prs_telemetrydata_scope_get: ?.?.prs.telemetryservice.read
+      security.require-ssl: true
+      spring_profiles_active: euwest
+      TelemetryDataEuWestUrl: <TelemetryDataEuWestUrl>
+    services:
+      -  prs-logdrainer
+      -  prs-vault
+      -  prs-common-cups-<env>

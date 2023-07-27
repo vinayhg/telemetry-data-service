@@ -1,0 +1,35 @@
+spring:
+ main:
+  allow-circular-references: true
+config:
+ authFixedRateTime: 1140000
+ elastic:
+  threshold: ${pageMaxValue}
+  elastic-url: ${elastic_url}
+  elastic-port: ${elastic_port}
+  elastic-protocol: ${elastic_protocol}
+  index-name: ${index_name}
+  elastic-connection-time-out: 120000
+  elastic-retry-time-out: 120000
+  elastic-socket-time-out: 1500000
+audit_url: ${vcap.services.prs-audit-service.credentials.audit_url:}
+shared_key: ${vcap.services.prs-audit-service.credentials.audit_sign_sharedkey:}
+secret_key: ${vcap.services.prs-audit-service.credentials.audit_sign_secretkey:}
+audit_url_extension: /core/audit/AuditEvent
+log_level: INFO
+hsdp_vault_endpoint: ${vcap.services.prs-vault.credentials.endpoint:}
+hsdp_vault_role_id: ${vcap.services.prs-vault.credentials.role_id:}
+hsdp_vault_secret_id: ${vcap.services.prs-vault.credentials.secret_id:}
+hsdp_vault_secret_path: ${vcap.services.prs-vault.credentials.service_secret_path:}
+HSDP_IAM_HOST: https://iam-client-test.eu-west.philips-healthsuite.com
+HSDP_IAM_INTROSPECT_URL: https://iam-client-test.eu-west.philips-healthsuite.com/authorize/oauth2/introspect
+HSDP_IAM_ORGID: 4c3b3ea0-63e8-4bd4-a1eb-aabc8290d365
+prs_vault_introspectClientIdKey: IntrospectClientId
+prs_vault_introspectClientSecretKey: IntrospectClientSecret
+prs_vault_redisCacheSecretKey: RedisCacheSecret
+prs_vault_iamServiceClientCredentialsPath: /IamServiceClientCredentials
+prs_vault_iamServiceGlobalClientCredentialsPath: /IamUserClientCredentials
+prs_vault_wcfClientCredentialsPath: /WCFCredentials
+prs_vault_redisCacheCredentialsPath: /RedisCacheCredentials
+prs_vault_auditProductKeyVaultPath: /AuditProductKey
+prs_vault_elasticCredentialsVaultPath: /ElasticCredentials

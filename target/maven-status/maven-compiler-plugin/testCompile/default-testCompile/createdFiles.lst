@@ -1,0 +1,10 @@
+com\philips\ps\prs\telemetrydata\service\TelemetryDataServiceImplTest.class
+com\philips\ps\prs\telemetrydata\utils\TelemetryTransformHelperTest$TelemetryTransformHelperTestConfiguration.class
+com\philips\ps\prs\telemetrydata\controller\TelemetryDataControllerTest$config.class
+com\philips\ps\prs\telemetrydata\controller\TelemetryDataControllerTest.class
+com\philips\ps\prs\telemetrydata\controller\TelemetryDataControllerUsEastTest$config.class
+com\philips\ps\prs\telemetrydata\utils\IamHelperTests.class
+com\philips\ps\prs\telemetrydata\controller\TelemetryDataControllerUsEastTest.class
+com\philips\ps\prs\telemetrydata\utils\IamHelperTests$IAMHelperTestConfiguration.class
+com\philips\ps\prs\telemetrydata\utils\TelemetryTransformHelperTest.class
+com\philips\ps\prs\telemetrydata\service\TelemetryDataServiceImplTest$config.class

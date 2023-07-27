@@ -1,0 +1,89 @@
+server:
+  port:  6066
+spring:
+  web:
+    resources:
+      add-mappings: false
+  autoconfigure:
+    exclude: "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration"
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+    converters: 
+      preferred-json-mapper: gson
+  redis:
+    port: 6379
+  profiles:
+    active: useast
+      
+prs:
+  vault:
+    introspectClientIdKey: IntrospectClientId
+    introspectClientSecretKey: IntrospectClientSecret
+    redisCacheSecretKey: RedisCacheSecret
+    iamServiceClientCredentialsPath: /IamServiceClientCredentials
+    iamServiceGlobalClientCredentialsPath: /IamUserClientCredentials
+    wcfClientCredentialsPath: /WCFCredentials
+    redisCacheCredentialsPath: /RedisCacheCredentials
+    auditProductKeyVaultPath: /AuditProductKey
+    elasticCredentialsVaultPath: /ElasticCredentials
+iamDetails:
+  euwest :
+    url: https://iam-client-test.us-east.philips-healthsuite.com
+    apiVersionKey: API-version
+    apiVersionValue: 2
+ps:
+  prs:
+    retrieveEventpathSaveTelemetryData: /telemetry  
+    retrieveEventpathGetTelemetryData: /telemetry/{nameTag}/{productType}
+    telemetrydata:
+      scope:
+        post: ?.?.prs.telemetryservice.write
+        get: ?.?.prs.telemetryservice.read
+hsdp:
+  iam:
+    host: https://iam-client-test.us-east.philips-healthsuite.com
+    identity: client
+    orgId: 4c3b3ea0-63e8-4bd4-a1eb-aabc8290d365
+    resourceId: 
+    introspect:
+      serviceclient:
+          id: 
+          secret: 
+      url: ${hsdp.iam.host}/authorize/oauth2/introspect
+      apiversion: 3
+  vault:
+    appname: null
+    endpoint: https://vproxy.eu-west.philips-healthsuite.com
+    role:
+      id: 2e83d119-dd86-5221-6f2b-f61763f500e8
+    secret:
+      id: a83e3413-eeca-9126-2826-ffa99bc6e017
+      path: /v1/cf/00e04319-43e1-4a97-9fbb-d0e890e964ad/secret     
+unsafeCharacters: <, >, ', %, &, +, ;, |, ~, `, *, $, ^, ?   
+contentLimit: 132000
+audit_url: https://auditcreateservice-client-test.us-east.philips-healthsuite.com
+audit_url_extension: /core/audit/AuditEvent
+product_key: null
+shared_key: null
+secret_key: null    
+log_level: INFO
+appName: prs-telemetry-data-service-dev
+applicationInstance: 1
+tenantServiceName: Telemetry Data Service
+codeSystem: PRS-TelemetryDataService
+displayName: Telemetry Data Service
+TelemetryDataEuWestUrl: telemetry-data-service.us-east.philips-healthsuite.com
+config:
+ elastic:
+  url: https://prs-elasticsearch-stg.us-east.philips-healthsuite.com
+  index-name: telemetry-dev
+  type-name: _doc
+  upsert-script-name: post-telemetry-dev
+proxy:
+  ip: "165.225.104.34"
+  port: 9480
+  httpconnetiontimeout: 10000  
+

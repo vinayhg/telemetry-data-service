@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TelemetryTransformHelper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">telemetry-data-service</a> &gt; <a href="index.source.html" class="el_package">com.philips.ps.prs.telemetrydata.utils</a> &gt; <span class="el_source">TelemetryTransformHelper.java</span></div><h1>TelemetryTransformHelper.java</h1><pre class="source lang-java linenums">package com.philips.ps.prs.telemetrydata.utils;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.philips.ps.prs.telemetrydata.constants.TelemetryDataConstants;
+import com.philips.ps.prs.telemetrydata.model.TelemetryData;
+import com.philips.ps.prs.telemetrydata.model.TelemetryDataRequest;
+import com.philips.ps.prs.telemetrydata.model.TelemetryRequest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Helper Class performs various required operations.
+ */
+public class TelemetryTransformHelper {
+<span class="fc" id="L20">    public TelemetryTransformHelper() {</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * Decorates Telemetry Data by promoteing data fields to root level. Also adds
+     * timestamp field with current DateTime
+     * 
+     * @param telemetryDataRequest
+     * @return String
+     */
+    public static String transform(TelemetryRequest telemetryRequest) {
+<span class="fc" id="L31">        final Gson gson = new Gson();</span>
+<span class="fc" id="L32">        final String jsonString = gson.toJson(telemetryRequest);</span>
+<span class="fc" id="L33">        final JsonObject jsonObject = (JsonObject) JsonParser.parseString(jsonString);</span>
+<span class="fc" id="L34">        return gson.toJson(jsonObject);</span>
+    }
+
+    /**
+     * 
+     * @param telemetryDocument
+     * @return
+     */
+    public static TelemetryDataRequest transform(Map&lt;String, Object&gt; telemetryDocument) {
+<span class="fc" id="L43">        final TelemetryDataRequest telemetryDataRequest = new TelemetryDataRequest();</span>
+<span class="fc" id="L44">        telemetryDataRequest.setProductType(telemetryDocument.get(TelemetryDataConstants.FIELD_PRODUCTTYPE).toString());</span>
+<span class="fc" id="L45">        telemetryDataRequest.setNameTag(telemetryDocument.get(TelemetryDataConstants.FIELD_NAMETAG).toString());</span>
+<span class="fc" id="L46">        final List&lt;TelemetryData&gt; dataList = new ArrayList&lt;&gt;();</span>
+        // TODO:ArrayList is a raw type.
+        @SuppressWarnings({ &quot;rawtypes&quot;, &quot;unchecked&quot; })
+<span class="fc" id="L49">        List&lt;HashMap&lt;String, Object&gt;&gt; dataMaps = (ArrayList) telemetryDocument.get(TelemetryDataConstants.FIELD_DATA);</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (HashMap&lt;String, Object&gt; dataMap : dataMaps) {</span>
+<span class="fc" id="L51">            final TelemetryData data = new TelemetryData();</span>
+<span class="fc" id="L52">            data.setName(dataMap.get(TelemetryDataConstants.FIELD_NAME).toString());</span>
+<span class="fc" id="L53">            data.setValue(dataMap.get(TelemetryDataConstants.FIELD_VALUE).toString());</span>
+<span class="fc" id="L54">            data.setTimestamp(dataMap.get(TelemetryDataConstants.FIELD_TIMESTAMP).toString());</span>
+<span class="fc" id="L55">            dataList.add(data);</span>
+<span class="fc" id="L56">        }</span>
+<span class="fc" id="L57">        telemetryDataRequest.setData(dataList);</span>
+<span class="fc" id="L58">        return telemetryDataRequest;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
