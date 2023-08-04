@@ -1,0 +1,64 @@
+---
+applications:
+  -
+    buildpack: https://github.com/cloudfoundry/java-buildpack.git#v4.57
+    instances: 1
+    memory: 1G
+    name: <telemetryDataServiceName>-<env>
+    path: telemetry-data-service-1.0.0.021.jar
+    stack: cflinuxfs4
+    routes:
+      - route: telemetry-data-service-<env>.<hsdpRegion>.philips-healthsuite.com
+
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ }}'
+      appName: ${VCAP_APPLICATION.name:}
+      appVersion: 1.0.0.0
+      application_loglevel: INFO
+      componentName: <telemetryDataServiceName>-<env>
+
+      # General environment variables
+      audit_url: ${vcap.services.<auditServiceName>.credentials.audit_url:}
+      shared_key: ${vcap.services.<auditServiceName>.credentials.audit_sign_sharedkey:}
+      secret_key: ${vcap.services.<auditServiceName>.credentials.audit_sign_secretkey:}
+      audit_url_extension: /core/audit/AuditEvent
+      log_level: INFO
+
+      # Environment variables that App uses to access HSDP Vault service
+      hsdp_vault_endpoint: ${vcap.services.<vaultServiceName>.credentials.endpoint:}
+      hsdp_vault_role_id: ${vcap.services.<vaultServiceName>.credentials.role_id:}
+      hsdp_vault_secret_id: ${vcap.services.<vaultServiceName>.credentials.secret_id:}
+      hsdp_vault_secret_path: ${vcap.services.<vaultServiceName>.credentials.service_secret_path:}
+
+      # Environment variables that App uses to access IAM
+      HSDP_IAM_HOST: ${vcap.services.prs-common-cups-<env>.credentials.<hsdpRegion>.hsdp.iam}
+      HSDP_IAM_ORGID: 4c3b3ea0-63e8-4bd4-a1eb-aabc8290d365
+      iamDetails_url: ${vcap.services.prs-common-cups-<env>.credentials.<globalRegion>.hsdp.iam}
+
+      prs_vault_introspectClientIdKey: ${vcap.services.prs-common-cups-<env>.credentials.<globalRegion>.vaultPath.introspectClientIdKey}
+      prs_vault_introspectClientSecretKey: ${vcap.services.prs-common-cups-<env>.credentials.<globalRegion>.vaultPath.introspectClientSecretKey}
+      prs_vault_redisCacheSecretKey: ${vcap.services.prs-common-cups-<env>.credentials.<globalRegion>.vaultPath.redisCacheSecretKey}
+      prs_vault_iamServiceClientCredentialsPath: ${vcap.services.prs-common-cups-<env>.credentials.<<hsdpRegion>>.vaultPath.iamServiceClientCredentialsPath}
+      prs_vault_iamUserCredentialsPath: ${vcap.services.prs-common-cups-<env>.credentials.<<hsdpRegion>>.vaultPath.iamUserCredentialsPath}
+      prs_vault_wcfClientCredentialsPath: ${vcap.services.prs-common-cups-<env>.credentials.<globalRegion>.vaultPath.wcfClientCredentialsPath}
+      prs_vault_redisCacheCredentialsPath: ${vcap.services.prs-common-cups-<env>.credentials.<globalRegion>.vaultPath.redisCacheCredentialsPath}
+      prs_vault_auditProductKeyVaultPath: ${vcap.services.prs-common-cups-<env>.credentials.<globalRegion>.vaultPath.auditProductKeyVaultPath}
+
+      TRUST_CERTS: elasticsearch5-ec1922ee-febe-4360-b9b6-0e3f4220ef5f.cf.emea1.phsdp.com:8443
+      config_elastic_url: ${vcap.services.prs-common-cups-<env>.credentials.<globalRegion>.prs.elasticSearchUrl}
+      config_elastic_upsert-script-name: post-telemetry-<env>
+      index_name: telemetry-<env>
+      pageMaxValue: 10000
+      ps_prs_telemetrydata_scope_post: ?.?.prs.telemetryservice.write
+      ps_prs_telemetrydata_scope_get: ?.?.prs.telemetryservice.read
+      security.require-ssl: true
+      TelemetryDataEuWestUrl: <TelemetryDataEuWestUrl>
+
+    services:
+      # Names of services that this App uses
+      -  <logdrainerServiceName>
+      -  <auditServiceName>
+      -  <vaultServiceName>
+      -  prs-common-cups-<env>
+
+    hsdpRegion: <hsdpRegion>

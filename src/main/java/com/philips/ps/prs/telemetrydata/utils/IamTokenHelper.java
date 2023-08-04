@@ -35,13 +35,13 @@ import java.util.Map;
  */
 public class IamTokenHelper {
 
-    @Value("${iamDetails.euwest.url}")
-    private String iamEuWestUrl;
+    @Value("${iamDetails.globalRegion.url}")
+    private String iamglobalRegionUrl;
 
-    @Value("${iamDetails.euwest.apiVersionKey}")
+    @Value("${iamDetails.globalRegion.apiVersionKey}")
     private String iamApiVersionKey;
 
-    @Value("${iamDetails.euwest.apiVersionValue}")
+    @Value("${iamDetails.globalRegion.apiVersionValue}")
     private String iamApiVersionValue;
 
     @Value("${prs.vault.iamServiceGlobalClientCredentialsPath}")
@@ -58,9 +58,9 @@ public class IamTokenHelper {
 
     /**
      * 
-     * @return gets token for eu-west.
+     * @return gets token for global region.
      */
-    public String getAccessTokenEuWest() {
+    public String getAccessToken() {
         try {
             final VaultSensitiveData vaultSensitiveData = vaultHelper.retrieve(vaultIamServiceCredentialsPath);
             checkEmptyVaultData(vaultSensitiveData);
@@ -69,7 +69,7 @@ public class IamTokenHelper {
             headers.set(iamApiVersionKey, iamApiVersionValue);
             headers.setBasicAuth(vaultSensitiveData.getKey(), vaultSensitiveData.getValue());
             final HttpEntity<String> request = new HttpEntity<>(IAM_REQUEST_BODY, headers);
-            return restTemplate.postForObject(iamEuWestUrl.concat("/authorize/oauth2/token"), request, Map.class).get(TelemetryDataConstants.ACCESS_TOKEN)
+            return restTemplate.postForObject(iamglobalRegionUrl.concat("/authorize/oauth2/token"), request, Map.class).get(TelemetryDataConstants.ACCESS_TOKEN)
                     .toString();
         } catch (RestClientException exception) {
             LOGGER.error("Exception occured while generating IAM access token." + exception.getLocalizedMessage());

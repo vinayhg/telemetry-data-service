@@ -30,7 +30,7 @@ import java.util.Base64;
  * Provides details to the rest client to connect to elastic search
  */
 @Component
-@Profile("euwest")
+@Profile("${spring.profiles.active}")
 public class ElasticRestClient {
     private static final Logger LOGGER = Logger.getLogger(ElasticRestClient.class);
     @Value("${prs.vault.elasticCredentialsVaultPath}")

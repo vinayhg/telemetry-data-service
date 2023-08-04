@@ -24,7 +24,7 @@ public class TelemetryTransformHelper {
      * Decorates Telemetry Data by promoteing data fields to root level. Also adds
      * timestamp field with current DateTime
      * 
-     * @param telemetryDataRequest
+     * @param telemetryRequest
      * @return String
      */
     public static String transform(TelemetryRequest telemetryRequest) {

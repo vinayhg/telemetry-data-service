@@ -34,8 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
-@Profile("euwest")
+@Profile("${spring.profiles.active}")
 @RequestMapping(TelemetryDataConstants.BASE_URL)
 @RestController
 /**

@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
  * Provides details to the rest client to connect to elastic search
  */
 @Component
-@Profile("useast")
+@Profile("${spring.profiles.active}")
 public class ElasticRestClientUsEast {
     
     @Bean

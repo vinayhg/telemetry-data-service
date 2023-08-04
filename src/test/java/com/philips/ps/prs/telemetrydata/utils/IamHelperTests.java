@@ -46,7 +46,7 @@ public class IamHelperTests {
     @BeforeEach
     public void setUp() {
         ReflectionTestUtils.setField(iamHelper, "vaultIamServiceCredentialsPath", "url");
-        ReflectionTestUtils.setField(iamHelper, "iamEuWestUrl", "url");
+        ReflectionTestUtils.setField(iamHelper, "iamglobalRegionUrl", "url");
         ReflectionTestUtils.setField(iamHelper, "iamApiVersionKey", "key");
         ReflectionTestUtils.setField(iamHelper, "iamApiVersionValue", "val");
     }
@@ -60,7 +60,7 @@ public class IamHelperTests {
         when(vaultSensitiveData.getValue()).thenReturn("value");
         when(restTemplate.postForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(HttpEntity.class),
                                         ArgumentMatchers.eq(Map.class))).thenReturn(tokenResponse);
-        assertEquals("alpha_protocol", iamHelper.getAccessTokenEuWest());
+        assertEquals("alpha_protocol", iamHelper.getAccessToken());
     }
 
     @Test
@@ -72,6 +72,6 @@ public class IamHelperTests {
         tokenResponse.put("access_token", "alpha_protocol");
         when(restTemplate.postForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(HttpEntity.class),
                                         ArgumentMatchers.eq(Map.class))).thenThrow(RestClientException.class);
-        assertThrows(InternalException.class, () -> iamHelper.getAccessTokenEuWest());
+        assertThrows(InternalException.class, () -> iamHelper.getAccessToken());
     }
 }
